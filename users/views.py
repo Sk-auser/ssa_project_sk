@@ -8,13 +8,14 @@ from .forms import UserRegistrationForm
 import requests
 from django.conf import settings
 
+
 def register(request):
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Your account has been created! You can now log in.")
-            return redirect('users:login')
+            user = form.save()
+            messages.success(request, "Your account has been created! Please set up multi-factor authentication.")
+            return redirect('two_factor:setup')  # Redirect to MFA setup page
     else:
         form = UserRegistrationForm()
     return render(request, 'users/register.html', {'form': form})
