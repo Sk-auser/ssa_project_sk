@@ -8,20 +8,20 @@ from .forms import UserRegistrationForm
 import requests
 from django.conf import settings
 
-
 def register(request):
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            messages.success(request, "Your account has been created! Please set up multi-factor authentication.")
+            form.save()
+            messages.success(request, "Your account has been created! You can now log in.")
+            return redirect('users:login')
     else:
         form = UserRegistrationForm()
     return render(request, 'users/register.html', {'form': form})
+
 @login_required(login_url='users:login')
 def user(request):
     return render(request, "users/user.html")
-
 
 def login_view(request):
     if request.method == "POST":
@@ -53,6 +53,7 @@ def login_view(request):
         else:
             messages.error(request, "Invalid username or password.")
     return render(request, "users/login.html")
+
 def logout_view(request):
     logout(request)
     messages.success(request, "Successfully logged out.")

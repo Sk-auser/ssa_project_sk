@@ -1,0 +1,71 @@
+Watching for file changes with StatReloader
+"GET /users/register/ HTTP/1.1" 200 2212
+"GET /static/chipin/styles.css HTTP/1.1" 304 0
+"GET /static/chipin/logo_90.jpg HTTP/1.1" 304 0
+"GET /users/login/ HTTP/1.1" 200 1787
+"POST /users/login/ HTTP/1.1" 302 0
+"GET /users/user/ HTTP/1.1" 200 963
+"GET /chipin/ HTTP/1.1" 200 1234
+"GET /chipin/create_group/ HTTP/1.1" 200 1276
+"POST /chipin/create_group/ HTTP/1.1" 302 0
+"GET /chipin/group/2/ HTTP/1.1" 200 1164
+"GET /chipin/group/2/invite/ HTTP/1.1" 200 1294
+"POST /users/logout/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 1916
+"GET /users/register/ HTTP/1.1" 200 2212
+"GET /users/login/ HTTP/1.1" 200 1787
+"POST /users/login/ HTTP/1.1" 302 0
+"GET /users/user/ HTTP/1.1" 200 963
+"POST /users/logout/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 1916
+"GET /users/register/ HTTP/1.1" 200 2212
+"GET /users/login/ HTTP/1.1" 200 1787
+"POST /users/login/ HTTP/1.1" 302 0
+"GET /users/user/ HTTP/1.1" 200 963
+"GET /chipin/ HTTP/1.1" 200 1522
+"GET /chipin/group/1/delete/ HTTP/1.1" 302 0
+"GET /chipin/ HTTP/1.1" 200 1385
+"GET /chipin/group/2/delete/ HTTP/1.1" 302 0
+"GET /chipin/ HTTP/1.1" 200 1168
+"POST /users/logout/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 1916
+"GET /users/register/ HTTP/1.1" 200 2212
+/Users/saba/ssa_project_sk/users/forms.py changed, reloading.
+Watching for file changes with StatReloader
+/Users/saba/ssa_project_sk/chipin/forms.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /users/register/ HTTP/1.1" 200 2212
+/Users/saba/ssa_project_sk/users/forms.py changed, reloading.
+Watching for file changes with StatReloader
+/Users/saba/ssa_project_sk/users/forms.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /users/register/ HTTP/1.1" 200 2212
+"GET /static/chipin/styles.css HTTP/1.1" 304 0
+"GET /static/chipin/logo_90.jpg HTTP/1.1" 304 0
+"GET /users/register/ HTTP/1.1" 200 2212
+Watching for file changes with StatReloader
+"GET /users/register/ HTTP/1.1" 200 2212
+"GET /users/login/ HTTP/1.1" 200 1787
+"GET /users/register/ HTTP/1.1" 200 2212
+"GET /users/login/ HTTP/1.1" 200 1787
+- Broken pipe from ('127.0.0.1', 53740)
+"POST /users/login/ HTTP/1.1" 302 0
+"GET /users/user/ HTTP/1.1" 200 963
+/Users/saba/ssa_project_sk/users/models.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /users/user/ HTTP/1.1" 200 963
+"GET /chipin/ HTTP/1.1" 200 1017
+"POST /users/logout/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 1916
+"GET /users/register/ HTTP/1.1" 200 2212
+"GET /users/login/ HTTP/1.1" 200 1787
+"GET /users/register/ HTTP/1.1" 200 2212
+/Users/saba/ssa_project_sk/chipin/forms.py changed, reloading.
+Watching for file changes with StatReloader
+/Users/saba/ssa_project_sk/chipin/models.py changed, reloading.
+Watching for file changes with StatReloader
+/Users/saba/ssa_project_sk/chipin/urls.py changed, reloading.
+Watching for file changes with StatReloader
+/Users/saba/ssa_project_sk/chipin/views.py changed, reloading.
+Watching for file changes with StatReloader
+/Users/saba/ssa_project_sk/ssa_project_sk/settings.py changed, reloading.
