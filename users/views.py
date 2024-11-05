@@ -15,7 +15,6 @@ def register(request):
         if form.is_valid():
             user = form.save()
             messages.success(request, "Your account has been created! Please set up multi-factor authentication.")
-            return redirect('two_factor:setup')  # Redirect to MFA setup page
     else:
         form = UserRegistrationForm()
     return render(request, 'users/register.html', {'form': form})

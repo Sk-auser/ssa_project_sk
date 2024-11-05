@@ -40,11 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'chipin',
-    'otp',
-    'otp_totp',
-    'two_factor',
-    'django_otp.plugins.otp_totp',
-    'django_otp.plugins.otp_static',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +50,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_otp.middleware.OTPMiddleware',  # Middleware to handle OTP
 ]
 
 ROOT_URLCONF = 'ssa_project_sk.urls'
