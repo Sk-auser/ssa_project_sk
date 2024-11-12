@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Profile
+from django.core.exceptions import ValidationError
 
 class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -26,3 +27,23 @@ class UserRegistrationForm(UserCreationForm):
             profile.nickname = self.cleaned_data['nickname']
             profile.save()
         return user
+    
+class UserRegistrationForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput, min_length=8)
+    email = forms.EmailField()
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password']
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise ValidationError('Email is already in use.')
+        return email
+
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        # Ensure the password contains at least one number and one uppercase letter
+        if not any(char.isdigit() for char in password) or not any(char.isupper() for char in password):
+            raise ValidationError('Password must contain at least one digit and one uppercase letter.')
+        return password

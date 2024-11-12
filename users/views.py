@@ -9,16 +9,15 @@ import requests
 from django.conf import settings
 
 def register(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Your account has been created! You can now log in.")
-            return redirect('users:login')
+            messages.success(request, 'Registration successful.')
+            return redirect('login')
     else:
         form = UserRegistrationForm()
     return render(request, 'users/register.html', {'form': form})
-
 @login_required(login_url='users:login')
 def user(request):
     return render(request, "users/user.html")
@@ -58,3 +57,12 @@ def logout_view(request):
     logout(request)
     messages.success(request, "Successfully logged out.")
     return redirect('users:login')
+
+import bleach
+def post_comment(request):
+    if request.method == 'POST':
+        comment = request.POST.get('comment')
+        # Sanitise user input to remove any harmful scripts
+        sanitized_comment = bleach.clean(comment)
+        # Save the sanitised comment to the database
+        Comment.objects.create(user=request.user, text=sanitized_comment)
