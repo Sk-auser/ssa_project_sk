@@ -57,12 +57,3 @@ def logout_view(request):
     logout(request)
     messages.success(request, "Successfully logged out.")
     return redirect('users:login')
-
-import bleach
-def post_comment(request):
-    if request.method == 'POST':
-        comment = request.POST.get('comment')
-        # Sanitise user input to remove any harmful scripts
-        sanitized_comment = bleach.clean(comment)
-        # Save the sanitised comment to the database
-        Comment.objects.create(user=request.user, text=sanitized_comment)

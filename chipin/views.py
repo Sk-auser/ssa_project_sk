@@ -12,6 +12,7 @@ from .models import GroupJoinRequest
 import urllib.parse
 import logging
 from .forms import CommentForm
+import bleach
 
 @login_required
 def home(request):
@@ -27,7 +28,6 @@ def home(request):
         'available_groups': available_groups
     }
     return render(request, 'chipin/home.html', context)
-
 @login_required
 def create_group(request):
     if request.method == 'POST':
@@ -195,27 +195,25 @@ def vote_on_join_request(request, group_id, request_id, vote):
     return redirect('chipin:group_detail', group_id=group.id)
 
 @login_required
-def edit_comment(request, comment_id, group_id):
+def edit_comment(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
-    group = get_object_or_404(Group, id=group_id)
-    if comment.user != request.user:
-        return redirect('chipin:group_detail', group_id=group.id)
+    if comment.user != request.user:  # Ensure only the comment author can edit
+        return redirect('chipin:group_detail', group_id=comment.group.id)
     if request.method == 'POST':
         form = CommentForm(request.POST, instance=comment)
         if form.is_valid():
             form.save()
-            return redirect('chipin:group_detail', group_id=group.id)
+            return redirect('chipin:group_detail', group_id=comment.group.id)
     else:
         form = CommentForm(instance=comment)
-    return render(request, 'chipin/edit_comment.html', {'form': form, 'comment': comment, 'group': group})
+    return render(request, 'chipin/edit_comment.html', {'form': form, 'comment': comment})
 
 @login_required
-def delete_comment(request, comment_id, group_id):
+def delete_comment(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
-    group = get_object_or_404(Group, id=group_id)
-    if comment.user == request.user or request.user == group.admin:
+    if comment.user == request.user or request.user == comment.group.admin:  # Allow author or group admin to delete
         comment.delete()
-    return redirect('chipin:group_detail', group_id=group.id)
+    return redirect('chipin:group_detail', group_id=comment.group.id)
 
 
 # Set up logger
@@ -236,3 +234,11 @@ def user_groups_view(request):
     except Exception as e:
         logger.error(f"Unexpected error: {e}")  # Catch all other errors
         return render(request, 'chipin/error.html', {'message': 'An unexpected error occurred. Please try again later.'})
+    
+def post_comment(request):
+    if request.method == 'POST':
+        comment = request.POST.get('comment')
+        # Sanitise user input to remove any harmful scripts
+        sanitized_comment = bleach.clean(comment)
+        # Save the sanitised comment to the database
+        Comment.objects.create(user=request.user, text=sanitized_comment)
