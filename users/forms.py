@@ -49,4 +49,4 @@ class UserRegistrationForm(forms.ModelForm):
         return password
     
 class TopUpForm(forms.Form):
-    amount = forms.DecimalField(min_value=0.005, max_digits=10, decimal_places=2, required=True, widget=forms.NumberInput(attrs={'placeholder': 'Enter amount'}))
+    amount = forms.DecimalField(min_value=0.01, max_digits=10, decimal_places=2, required=True, widget=forms.NumberInput(attrs={'placeholder': 'Enter amount'}))
