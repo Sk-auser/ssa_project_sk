@@ -1,0 +1,21 @@
+{% extends 'chipin/base.html' %}
+{% load static %}
+{% block title %}Balance Top-Up{% endblock %}
+
+{% block content %}
+  <h2>Top Up Your Balance</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Top Up</button>
+  </form>
+
+  {% if messages %}
+    <ul>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endblock %}

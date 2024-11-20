@@ -47,3 +47,12 @@ class UserRegistrationForm(forms.ModelForm):
         if not any(char.isdigit() for char in password) or not any(char.isupper() for char in password):
             raise ValidationError('Password must contain at least one digit and one uppercase letter.')
         return password
+    
+class TopUpForm(forms.Form):
+    amount = forms.DecimalField(min_value=0.01, max_digits=10, decimal_places=2, required=True, widget=forms.NumberInput(attrs={'placeholder': 'Enter amount'}))
+
+    def clean_amount(self):
+        amount = self.cleaned_data.get('amount')
+        if amount <= 0:
+            raise forms.ValidationError("Amount must be greater than zero.")
+        return amount

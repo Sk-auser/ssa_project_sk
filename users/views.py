@@ -4,9 +4,11 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import UserRegistrationForm
+from .forms import UserRegistrationForm, TopUpForm
 import requests
 from django.conf import settings
+from .models import Transaction
+
 
 def register(request):
     if request.method == 'POST':
@@ -20,7 +22,8 @@ def register(request):
     return render(request, 'users/register.html', {'form': form})
 @login_required(login_url='users:login')
 def user(request):
-    return render(request, "users/user.html")
+    balance = Transaction.get_balance(request.user)
+    return render(request, 'users/user.html', {'balance': balance})
 
 def login_view(request):
     if request.method == "POST":
@@ -57,3 +60,23 @@ def logout_view(request):
     logout(request)
     messages.success(request, "Successfully logged out.")
     return redirect('users:login')
+
+@login_required
+def top_up_balance(request):
+    if request.method == 'POST':
+        form = TopUpForm(request.POST)
+        if form.is_valid():
+            amount = form.cleaned_data['amount']
+            profile = request.user.profile
+            profile.balance += amount
+            profile.save()
+            Transaction.objects.create(user=request.user, amount=amount, transaction_type='top-up')
+
+            messages.success(request, f'Your balance has been topped up by {amount}.')
+            return redirect('users:user')  # Redirect to profile page after successful top-up
+        else:
+            messages.error(request, 'There was an error with your top-up request. Please try again.')
+    else:
+        form = TopUpForm()
+
+    return render(request, 'users/top-up.html', {'form': form})
