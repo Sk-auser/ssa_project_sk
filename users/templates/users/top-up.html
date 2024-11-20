@@ -10,12 +10,5 @@
     {{ form.as_p }}
     <button type="submit">Top Up</button>
   </form>
-
-  {% if messages %}
-    <ul>
-      {% for message in messages %}
-        <li>{{ message }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
+  <ul>{{ message }}</ul>
 {% endblock %}

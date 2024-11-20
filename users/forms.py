@@ -49,10 +49,4 @@ class UserRegistrationForm(forms.ModelForm):
         return password
     
 class TopUpForm(forms.Form):
-    amount = forms.DecimalField(min_value=0.01, max_digits=10, decimal_places=2, required=True, widget=forms.NumberInput(attrs={'placeholder': 'Enter amount'}))
-
-    def clean_amount(self):
-        amount = self.cleaned_data.get('amount')
-        if amount <= 0:
-            raise forms.ValidationError("Amount must be greater than zero.")
-        return amount
+    amount = forms.DecimalField(min_value=0.005, max_digits=10, decimal_places=2, required=True, widget=forms.NumberInput(attrs={'placeholder': 'Enter amount'}))
