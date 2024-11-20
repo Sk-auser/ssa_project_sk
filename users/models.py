@@ -46,5 +46,6 @@ class Transaction(models.Model):
 
     @staticmethod
     def get_balance(user):
-        total_top_up = Transaction.objects.filter(user=user, transaction_type='top-up').aggregate(total=models.Sum('amount'))['total'] or 0
+        total_top_up = Transaction.objects.filter(user=user, transaction_type='top-up').aggregate(total=models.Sum('amount'))['total'] or 100
         return total_top_up
+

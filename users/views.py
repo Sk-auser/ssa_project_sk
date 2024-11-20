@@ -20,17 +20,17 @@ def register(request):
     else:
         form = UserRegistrationForm()
     return render(request, 'users/register.html', {'form': form})
+
 @login_required(login_url='users:login')
 def user(request):
-    balance = Transaction.get_balance(request.user)
+    balance = request.user.profile.balance
     return render(request, 'users/user.html', {'balance': balance})
 
 def login_view(request):
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
-        recaptcha_response = request.POST.get("recaptcha-token")  # Updated
-        # Verify reCAPTCHA
+        recaptcha_response = request.POST.get("recaptcha-token") 
         data = {
             'secret': settings.RECAPTCHA_SECRET_KEY,
             'response': recaptcha_response,
@@ -41,16 +41,13 @@ def login_view(request):
             data=data
         )
         result = recaptcha_verification.json()
-        # Check reCAPTCHA response
         if not result.get("success"):
             messages.error(request, "reCAPTCHA validation failed. Please try again.")
-            return redirect("users:login")  # Redirect back to the login page
-        # Authenticate user if reCAPTCHA is valid
+            return redirect("users:login") 
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            # Redirect to the next URL if provided, else default to user profile
-            next_url = request.GET.get('next', reverse("users:user"))  # Simplified fallback
+            next_url = request.GET.get('next', reverse("users:user"))
             return redirect(next_url)
         else:
             messages.error(request, "Invalid username or password.")
@@ -68,15 +65,17 @@ def top_up_balance(request):
         if form.is_valid():
             amount = form.cleaned_data['amount']
             profile = request.user.profile
-            profile.balance += amount
+            profile.balance += amount  
             profile.save()
+
             Transaction.objects.create(user=request.user, amount=amount, transaction_type='top-up')
 
             messages.success(request, f'Your balance has been topped up by ${amount}.')
-            return redirect('users:user')  # Redirect to profile page after successful top-up
+            return redirect('users:user') 
         else:
             messages.error(request, 'There was an error with your top-up request. Please try again.')
     else:
         form = TopUpForm()
 
     return render(request, 'users/top-up.html', {'form': form})
+
