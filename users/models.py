@@ -21,16 +21,15 @@ class Profile(models.Model):
     
     def __str__(self):
         return self.user.username
+    
     def clean(self):
         validate_unique_nickname(self.nickname, instance=self)
+#playing around
 
     def save(self, *args, **kwargs):
+        self.max_spend = self.balance
         self.clean()
         super().save(*args, **kwargs)
-
-    def __str__(self):
-        return self.user.username
-
 
 class Transaction(models.Model):
     TRANSACTION_TYPES = [
@@ -46,6 +45,9 @@ class Transaction(models.Model):
 
     @staticmethod
     def get_balance(user):
-        total_top_up = Transaction.objects.filter(user=user, transaction_type='top-up').aggregate(total=models.Sum('amount'))['total'] or 100
+        total_top_up = Transaction.objects.filter(user=user, transaction_type='top-up').aggregate(total=models.Sum('amount'))['total'] or user.profile.balance
         return total_top_up
-
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)

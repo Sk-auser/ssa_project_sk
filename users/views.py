@@ -65,11 +65,8 @@ def top_up_balance(request):
         if form.is_valid():
             amount = form.cleaned_data['amount']
             profile = request.user.profile
-            profile.balance += amount  
-            profile.save()
-
+            profile.update_balance(amount)
             Transaction.objects.create(user=request.user, amount=amount, transaction_type='top-up')
-
             messages.success(request, f'Your balance has been topped up by ${amount}.')
             return redirect('users:user') 
         else:
