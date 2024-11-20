@@ -72,7 +72,7 @@ def top_up_balance(request):
             profile.save()
             Transaction.objects.create(user=request.user, amount=amount, transaction_type='top-up')
 
-            messages.success(request, f'Your balance has been topped up by {amount}.')
+            messages.success(request, f'Your balance has been topped up by ${amount}.')
             return redirect('users:user')  # Redirect to profile page after successful top-up
         else:
             messages.error(request, 'There was an error with your top-up request. Please try again.')

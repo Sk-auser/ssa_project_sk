@@ -4,7 +4,7 @@
 {% block content %} 
     <h2>Welcome {{ request.user.first_name }}</h2>
     <p>This page is for user management functions.</p>
-    <p class="balance"><strong>Current Balance:</strong> {{ balance|floatformat:2 }}</p>
+    <p class="balance"><strong>Current Balance:</strong> ${{ balance|floatformat:2 }}</p>
     <a href="{% url 'users:top-up' %}">Top Up Balance</a>
     <br>
     <br>
